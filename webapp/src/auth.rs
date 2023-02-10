@@ -1,16 +1,22 @@
 use actix_web::{get, Responder, HttpResponse, cookie::Cookie, dev::HttpServiceFactory, web::{self, Query}, HttpRequest};
+use actix_web_httpauth::extractors::bearer::BearerAuth;
 use rand::Rng;
-use reqwest::StatusCode;
-use serde::{Deserialize, Serialize, de::IntoDeserializer};
-use serde_json::{to_vec, Deserializer};
+use serde::{Deserialize, Serialize, };
+use serde_json::{to_vec};
 
 
 #[derive(Deserialize)]
 struct TokenResponse {
     access_token: String,
+    identity_token: IdentityToken,
     scope: String,
     expires_in: i32,
     token_type: String
+}
+
+#[derive(Deserialize)]
+struct IdentityToken {
+
 }
 
 pub fn validate(auth: BearerAuth) {

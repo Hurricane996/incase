@@ -199,6 +199,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "actix-web-httpauth"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6dda62cf04bc3a9ad2ea8f314f721951cfdb4cdacec4e984d20e77c7bb170991"
+dependencies = [
+ "actix-utils",
+ "actix-web",
+ "base64 0.13.1",
+ "futures-core",
+ "futures-util",
+ "log",
+ "pin-project-lite",
+]
+
+[[package]]
 name = "adler"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -250,24 +265,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "94fb8275041c72129eb51b7d0322c29b8387a0386127718b096429201a5d6ece"
 dependencies = [
  "alloc-no-stdlib",
-]
-
-[[package]]
-name = "app"
-version = "0.1.0"
-dependencies = [
- "actix-cors",
- "actix-web",
- "common",
- "cookie 0.17.0",
- "env_logger",
- "rand",
- "reqwest",
- "serde",
- "serde_json",
- "sha256",
- "tokio",
- "urlencoding",
 ]
 
 [[package]]
@@ -1859,6 +1856,25 @@ checksum = "e33b99f4b23ba3eec1a53ac264e35a755f00e966e0065077d6027c0f575b0b97"
 dependencies = [
  "js-sys",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "webapp"
+version = "0.1.0"
+dependencies = [
+ "actix-cors",
+ "actix-web",
+ "actix-web-httpauth",
+ "common",
+ "cookie 0.17.0",
+ "env_logger",
+ "rand",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sha256",
+ "tokio",
+ "urlencoding",
 ]
 
 [[package]]

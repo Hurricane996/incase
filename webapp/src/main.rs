@@ -9,22 +9,23 @@ use video_pull::video_service;
 
 #[actix_web::main]
 async fn main() -> Result<(), Box<dyn Error>> {
+    let connection_string = std::env::var("POSTGRES_CONNECTION_STRING").expect("No postgres connection string provided");
     std::env::set_var("RUST_LOG", "debug");
     //std::env::set_var("RUST_BACKTRACE", "full");
 
     env_logger::init();
     
-    HttpServer::new(|| {
+    HttpServer::new(move || {
         App::new()
             .service(auth_service("auth"))
             .service(video_service(
                 "localhost:8080",
                 "video",
-                "postgresql://postgres:ljw22089@localhost:5432/incase"
+                connection_string.clone()
             ))
             //.default_service(web::to(e404))
             .service(hello_world)
-    }).bind("localhost:8080")?
+    }).bind("0.0.0.0:8080")?
     .run().await?;
 
     Ok(())

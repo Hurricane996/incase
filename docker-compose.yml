@@ -1,0 +1,29 @@
+services:
+  db:
+    build:
+      dockerfile: db/Dockerfile
+      context: .
+    ports: 
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=mKfbrcj6lTtQSOnz8A9i3fabtABzgbhM
+  webapp:
+    build:
+      dockerfile: webapp/Dockerfile
+      context: .
+    ports: 
+      - 8080:8080
+    links:
+      - "db:database"
+    environment:
+      - POSTGRES_CONNECTION_STRING=postgresql://postgres:mKfbrcj6lTtQSOnz8A9i3fabtABzgbhM@database/incase
+  video_push:
+    build:
+      dockerfile: video_push/Dockerfile
+      context: .
+    ports:
+      - 1234:1234
+    links:
+      - "db:database"
+    environment:
+      - POSTGRES_CONNECTION_STRING=postgresql://postgres:mKfbrcj6lTtQSOnz8A9i3fabtABzgbhM@database/incase

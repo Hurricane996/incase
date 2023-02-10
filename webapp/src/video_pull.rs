@@ -7,10 +7,10 @@ use common::Database;
 struct AppData {
     address: &'static str,
     area: &'static str,
-    connection_string: &'static str
+    connection_string: String
 }
 
-pub fn video_service(address: &'static str, area: &'static str, connection_string: &'static str) -> impl HttpServiceFactory {
+pub fn video_service(address: &'static str, area: &'static str, connection_string: String) -> impl HttpServiceFactory {
     // we want any application with the correct token to be able to play our video, so allow all cors for here
     // on other routes we want to be much more restrictive
     let cors = Cors::default()
@@ -30,7 +30,7 @@ pub fn video_service(address: &'static str, area: &'static str, connection_strin
 
 #[get("{username}/playlist.m3u8")]
 async fn get_playlist(username: web::Path<String>,data: web::Data<AppData>) -> impl Responder {
-    let mut client = Database::new(data.connection_string).await?;
+    let mut client = Database::new(&data.connection_string).await?;
     let sequences = client.get_sequence_numbers(username.as_str()).await?;
 
     const HEADER: &str =
@@ -49,7 +49,7 @@ async fn get_playlist(username: web::Path<String>,data: web::Data<AppData>) -> i
 
 #[get("{username}/{sequence}.ts")]
 async fn get_video_segment(data: web::Data<AppData>, path: web::Path<(String,i32)>) -> impl Responder {
-    let mut client = Database::new(data.connection_string).await?;
+    let mut client = Database::new(&data.connection_string).await?;
 
     let result = client.get_video_clip(path.0.as_str(), path.1).await.expect("Failed to get video clip");
 

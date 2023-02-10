@@ -1,5 +1,5 @@
 [package]
-name = "app"
+name = "webapp"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 actix-cors = "0.6.4"
 actix-web = "4.3.0"
+actix-web-httpauth = "0.8.0"
 common = { version = "0.1.0", path = "../common" }
 cookie = "0.17.0"
 env_logger = "0.10.0"

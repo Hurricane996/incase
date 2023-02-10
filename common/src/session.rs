@@ -1,5 +1,7 @@
 use tokio_postgres::Error;
 
+use crate::Database;
+
 impl Database {
     pub fn add_session(session: String) -> Result<(), Error>{
 

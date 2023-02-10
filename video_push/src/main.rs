@@ -1,4 +1,4 @@
-use std::error::Error;
+use std::{error::Error, sync::Arc};
 
 use common::Database;
 use tokio::{net::TcpListener, io::AsyncReadExt};
@@ -6,12 +6,14 @@ const CHUNK_SIZE: usize = 1024 * 128;
 #[tokio::main]
 
 async fn main() -> Result<(),Box<dyn Error>>{
-    let listener = TcpListener::bind("localhost:1234").await.unwrap();
+    let connection_string = Arc::new(std::env::var("POSTGRES_CONNECTION_STRING").expect("No postgres connection string provided"));
+
+    let listener = TcpListener::bind("0.0.0.0:1234").await.unwrap();
     loop {
         let (mut socket, _) = listener.accept().await?;
-
+        let connection_string = connection_string.clone();
         tokio::spawn(async move {
-            let mut database = Database::new("postgresql://postgres:ljw22089@localhost:5432/incase").await.unwrap();
+            let mut database = Database::new(&connection_string).await.unwrap();
             // todo grab this from token
             let user_id = "auth0|63e0ad87641e1d30b85c7282";
             'outer : loop {
