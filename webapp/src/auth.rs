@@ -29,12 +29,11 @@ pub async fn login() -> impl Responder {
     let state = random_state();
 
     let url = format!(
-        "https://{}/authorize?response_type=code&client_id={}&redirect_uri={}&scope=openid%20profile&state={}&audience={}",
+        "https://{}/authorize?response_type=code&client_id={}&redirect_uri={}&scope=openid%20profile&state={}",
         AUTH0_DOMAIN,
         CLIENT_ID,
         urlencoding::encode(REDIRECT_URI),
-        state,
-        "api:web"
+        state
     );
 
     
@@ -92,6 +91,8 @@ async fn auth0_callback(req: HttpRequest, q: Query<Auth0CallbackParams>) -> impl
     let mut hr =  HttpResponse::Ok().body(resp);
 
     hr.add_removal_cookie(&Cookie::new("state","")).unwrap();
+
+    hr.add_cookie(&Cookie::new("session", sha256::digest(token.access_token) ));
     //hr.add_cookie(&Cookie::new("jwt", token.access_token)).unwrap();
 
     hr
